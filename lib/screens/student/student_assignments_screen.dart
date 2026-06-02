@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'submit_assignment_screen.dart';
-import 'package:intl/intl.dart';   // ← Important pour formater les dates
+import 'package:intl/intl.dart';   
 
 class StudentAssignmentsScreen extends StatefulWidget {
   const StudentAssignmentsScreen({super.key});
@@ -153,7 +153,7 @@ class _StudentAssignmentsScreenState
               deadlineStr = DateFormat('dd/MM/yyyy HH:mm').format(date);
               isLate = date.isBefore(DateTime.now());
               if (isLate) {
-                deadlineStr = '🕒 En retard - $deadlineStr';
+                deadlineStr = 'En retard - $deadlineStr';
               }
             }
 

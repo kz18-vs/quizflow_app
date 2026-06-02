@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-// ── DIALOG CRÉATION QUESTION ORDRE DE MOTS ───────────────────────
-// À placer dans : lib/widgets/word_order_dialog.dart
-
 class WordOrderDialog extends StatefulWidget {
   final Map<String, dynamic>? question;
   final Function(Map<String, dynamic>) onAddQuestion;

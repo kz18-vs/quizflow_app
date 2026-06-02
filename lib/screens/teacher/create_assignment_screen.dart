@@ -88,7 +88,7 @@ class _CreateAssignmentScreenState
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('✅ TP publié avec succès !'),
+            content: Text(' TP publié avec succès !'),
             backgroundColor: Colors.green,
           ),
         );

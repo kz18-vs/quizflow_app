@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-// ── WIDGET QUESTION ORDRE DE MOTS (compatible Web) ───────────────
-// lib/widgets/word_order_widget.dart
-
 class WordOrderWidget extends StatefulWidget {
   final Map<String, dynamic> question;
   final Function(List<String> orderedWords) onAnswered;

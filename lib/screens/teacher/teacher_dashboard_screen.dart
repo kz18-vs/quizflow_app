@@ -86,7 +86,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
     if (confirm == true && mounted) {
       try {
         await FirebaseFirestore.instance.collection('quizzes').doc(quizId).delete();
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('✅ QCM supprimé'), backgroundColor: Colors.green));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('QCM supprimé'), backgroundColor: Colors.green));
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Erreur: $e')));
       }
@@ -226,7 +226,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
     );
   }
 
-  // PAGE 2 : STATISTIQUES (✅ CORRIGÉ)
+  // PAGE 2 : STATISTIQUES 
   Widget _buildStatisticsTab() {
     final user = FirebaseAuth.instance.currentUser;
     return FutureBuilder<QuerySnapshot>(
@@ -244,13 +244,13 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
             final quizIds = quizDocs.map((d) => d.id).toSet();
             final relevantResults = allResults.where((r) => quizIds.contains((r.data() as Map)['quizId'])).toList();
 
-            // ✅ CORRECTION 1 : Participants uniques (Set élimine les doublons)
+            // Participants uniques (Set élimine les doublons)
             final uniqueStudentIds = relevantResults
                 .map((r) => (r.data() as Map)['studentId'] as String)
                 .toSet();
             final totalParticipants = uniqueStudentIds.length;
 
-            // ✅ CORRECTION 2 : Meilleur score par étudiant pour le taux de réussite
+            // Meilleur score par étudiant pour le taux de réussite
             final bestResults = <String, double>{};
             for (var r in relevantResults) {
               final data = r.data() as Map;
@@ -272,7 +272,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
             return SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                // ✅ CORRECTION 3 : Affichage des deux métriques (optionnel)
+                //  Affichage des deux métriques (optionnel)
                 _StatCard(title: "Participants Uniques", value: "$totalParticipants", icon: Icons.people, color: Colors.blue),
                 const SizedBox(height: 12),
                 _StatCard(title: "Tentatives Totales", value: "$totalAttempts", icon: Icons.repeat, color: Colors.purple),
@@ -286,7 +286,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                   final qResults = byQuiz[qDoc.id] ?? [];
                   if (qResults.isEmpty) return Card(margin: const EdgeInsets.only(bottom: 12), child: ListTile(title: Text(qData['title']), subtitle: Text(qData['subject']), trailing: const Text("0 participants")));
 
-                  // ✅ CORRECTION 4 : Grouper par étudiant et garder le meilleur score
+                  //  Grouper par étudiant et garder le meilleur score
                   final bestByStudent = <String, Map<String, dynamic>>{};
                   for (var res in qResults) {
                     final uid = res['studentId'] as String;
@@ -328,7 +328,7 @@ class _TeacherDashboardScreenState extends State<TeacherDashboardScreen> {
                     }
                   }
 
-                  // ✅ CORRECTION 5 : Top 3 sans doublons (meilleur score par étudiant)
+                  // Top 3 sans doublons (meilleur score par étudiant)
                   final top3Results = bestValues
                       ..sort((a, b) => (b['percentage'] ?? 0.0).compareTo(a['percentage'] ?? 0.0))
                       ..take(3)

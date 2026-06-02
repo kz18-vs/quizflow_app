@@ -99,11 +99,11 @@ Future<void> sendCheatingAlertToTeacher({
   required String teacherId,
   required String studentId,
   required String quizTitle,
-  required String studentName,      // ✅ AJOUTÉ
-  required String studentClass,     // ✅ AJOUTÉ
-  required String studentGroup,     // ✅ AJOUTÉ
+  required String studentName,      
+  required String studentClass,     
+  required String studentGroup,     
   required int violationCount,
-  required bool isExcluded,         // ✅ AJOUTÉ
+  required bool isExcluded,         
 }) async {
   final firestore = FirebaseFirestore.instance;
 

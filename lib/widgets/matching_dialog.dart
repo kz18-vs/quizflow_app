@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 
-// ── DIALOG CRÉATION QUESTION RELIER ──────────────────────────────
-// À ajouter dans create_quiz_screen.dart
-// Appel : showDialog(context: context, builder: (_) => MatchingDialog(...))
-
 class MatchingDialog extends StatefulWidget {
   final Map<String, dynamic>? question;
   final Function(Map<String, dynamic>) onAddQuestion;
@@ -266,7 +262,6 @@ class _MatchingDialogState extends State<MatchingDialog> {
               'type': 'matching',
               'text': _questionCtrl.text.trim(),
               'pairs': pairsData,
-              // Pour compatibilité avec le système existant
               'options': pairsData.map((p) => p['left']).toList(),
               'correctIndex': 0,
             });

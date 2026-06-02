@@ -45,7 +45,7 @@ class _TakeQuizScreenState extends State<TakeQuizScreen>
   bool _warningActive = false;
   
 
-  // 👤 Infos pour notifications
+  //  Infos pour notifications
   String? _teacherId;
   String _studentName = "Étudiant";
   String _studentClass = "N/A";

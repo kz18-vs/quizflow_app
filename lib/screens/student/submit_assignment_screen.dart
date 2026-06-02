@@ -13,16 +13,13 @@ class SubmitAssignmentScreen extends StatefulWidget {
   });
 
   @override
-  State<SubmitAssignmentScreen> createState() =>
-      _SubmitAssignmentScreenState();
+  State<SubmitAssignmentScreen> createState() => _SubmitAssignmentScreenState();
 }
 
-class _SubmitAssignmentScreenState
-    extends State<SubmitAssignmentScreen> {
-  static const Color primaryColor = Color(0xFF4A43EC);
-
+class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
   final _linkCtrl = TextEditingController();
   bool _loading = false;
+  final _auth = FirebaseAuth.instance;
 
   @override
   void dispose() {
@@ -31,10 +28,10 @@ class _SubmitAssignmentScreenState
   }
 
   Future<void> _submit() async {
-    if (_linkCtrl.text.trim().isEmpty) {
+    final link = _linkCtrl.text.trim();
+    if (link.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Entrez le lien de votre fichier')),
+        const SnackBar(content: Text('Veuillez entrer un lien Google Drive')),
       );
       return;
     }
@@ -42,70 +39,38 @@ class _SubmitAssignmentScreenState
     setState(() => _loading = true);
 
     try {
-      final user = FirebaseAuth.instance.currentUser!;
+      final user = _auth.currentUser!;
       final userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .get();
-      final userData = userDoc.data()!;
+      final userData = userDoc.data() ?? {};
 
-      final firstName = userData['firstName'] ?? '';
-      final lastName = userData['lastName'] ?? '';
-      final classe = userData['classe'] ?? '';
-      final groupe = userData['groupe'] ?? '';
-
-      // ── SAUVEGARDER LE RENDU ──────────────────────────────
-      await FirebaseFirestore.instance
-          .collection('submissions')
-          .add({
+      await FirebaseFirestore.instance.collection('submissions').add({
         'assignmentId': widget.assignmentId,
         'studentId': user.uid,
-        'firstName': firstName,
-        'lastName': lastName,
-        'classe': classe,
-        'groupe': groupe,
+        'firstName': userData['firstName'] ?? '',
+        'lastName': userData['lastName'] ?? '',
+        'classe': userData['classe'] ?? '',
+        'groupe': userData['groupe'] ?? '',
+        'fileLink': link,
         'module': widget.module,
-        'fileLink': _linkCtrl.text.trim(),
         'submittedAt': FieldValue.serverTimestamp(),
       });
 
-      // ── NOTIFIER LE PROF AVEC CLASSE ET GROUPE ────────────
-      final assignmentDoc = await FirebaseFirestore.instance
-          .collection('assignments')
-          .doc(widget.assignmentId)
-          .get();
-      final teacherId = assignmentDoc.data()?['teacherId'];
+      if (!mounted) return;
 
-      if (teacherId != null) {
-        await FirebaseFirestore.instance
-            .collection('notifications')
-            .add({
-          'userId': teacherId,
-          'title': 'Nouveau rendu reçu',
-          'message':
-              '$firstName $lastName — Classe $classe, Groupe $groupe a rendu "${widget.module}"',
-          'type': 'submission_received',
-          'isRead': false,
-          'createdAt': FieldValue.serverTimestamp(),
-        });
-      }
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Rendu envoyé avec succès ! ✅'),
-            backgroundColor: Colors.green,
-          ),
-        );
-        Navigator.pop(context);
-        Navigator.pop(context);
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(' Devoir soumis avec succès !'),
+          backgroundColor: Colors.green,
+        ),
+      );
+      Navigator.pop(context);
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erreur : $e')),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur : $e')),
+      );
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -114,90 +79,115 @@ class _SubmitAssignmentScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        backgroundColor: primaryColor,
-        title: const Text('Rendre le devoir',
-            style: TextStyle(color: Colors.white)),
+        title: const Text('Rendre le devoir'),
+        backgroundColor: const Color(0xFF4A43EC),
+        foregroundColor: Colors.white,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 30),
+            const SizedBox(height: 40),
 
-            // Icône
-            Icon(Icons.cloud_upload,
+            // Icône Cloud
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: const Color(0xFF4A43EC).withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.cloud_upload_rounded,
                 size: 80,
-                color: primaryColor.withOpacity(0.5)),
-            const SizedBox(height: 20),
+                color: Color(0xFF4A43EC),
+              ),
+            ),
+
+            const SizedBox(height: 24),
 
             // Titre
-            Text(
-              widget.module,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                  fontSize: 20, fontWeight: FontWeight.bold),
+            const Text(
+              'Base Données',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
+
             const SizedBox(height: 8),
 
             // Instructions
-            Text(
+            const Text(
               '1. Uploadez votre fichier sur Google Drive\n'
               '2. Cliquez sur "Partager" → "Copier le lien"\n'
               '3. Collez le lien ci-dessous',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Colors.grey[600], fontSize: 14, height: 1.6),
-            ),
-            const SizedBox(height: 30),
-
-            // Champ lien
-            TextFormField(
-              controller: _linkCtrl,
-              maxLines: 3,
-              decoration: InputDecoration(
-                labelText: 'Lien Google Drive',
-                hintText: 'https://drive.google.com/...',
-                prefixIcon:
-                    const Icon(Icons.link, color: primaryColor),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12)),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide:
-                      const BorderSide(color: primaryColor, width: 2),
-                ),
+                fontSize: 15,
+                height: 1.5,
+                color: Colors.grey,
               ),
             ),
 
-            const Spacer(),
+            const SizedBox(height: 40),
 
-            // Bouton envoyer
-            _loading
-                ? const Center(
-                    child: CircularProgressIndicator(
-                        color: primaryColor))
-                : ElevatedButton.icon(
-                    onPressed: _submit,
-                    icon: const Icon(Icons.send,
-                        color: Colors.white),
-                    label: const Text(
-                      'Envoyer le rendu',
-                      style: TextStyle(
-                          color: Colors.white, fontSize: 16),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColor,
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                    ),
+            // Champ de saisie
+            TextField(
+              controller: _linkCtrl,
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.link, color: Color(0xFF4A43EC)),
+                labelText: 'Lien Google Drive',
+                hintText: 'https://drive.google.com/...',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(
+                    color: Color(0xFF4A43EC),
+                    width: 2,
                   ),
-            const SizedBox(height: 20),
+                ),
+              ),
+              keyboardType: TextInputType.url,
+            ),
+
+            const SizedBox(height: 50),
+
+            // Bouton Envoyer
+            SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: ElevatedButton(
+                onPressed: _loading ? null : _submit,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF4A43EC),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 3,
+                ),
+                child: _loading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.send, color: Colors.white),
+                          SizedBox(width: 10),
+                          Text(
+                            'Envoyer le rendu',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+              ),
+            ),
           ],
         ),
       ),

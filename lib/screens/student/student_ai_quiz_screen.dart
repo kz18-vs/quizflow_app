@@ -68,7 +68,7 @@ class _StudentAIQuizScreenState extends State<StudentAIQuizScreen> {
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('✅ ${file.name} chargé !'), backgroundColor: Colors.green, duration: const Duration(seconds: 2)),
+            SnackBar(content: Text(' ${file.name} chargé !'), backgroundColor: Colors.green, duration: const Duration(seconds: 2)),
           );
         }
       }
@@ -247,7 +247,7 @@ class _StudentAIQuizScreenState extends State<StudentAIQuizScreen> {
                 children: [
                   Icon(_pdfBytes != null ? Icons.picture_as_pdf : Icons.upload_file, size: 46, color: _pdfBytes != null ? Colors.red : Colors.grey),
                   const SizedBox(height: 10),
-                  Text(_pdfBytes != null ? '✅ $_pdfName' : 'Appuyer pour choisir un PDF', style: TextStyle(fontSize: 14, fontWeight: _pdfBytes != null ? FontWeight.bold : FontWeight.normal, color: _pdfBytes != null ? primaryColor : Colors.grey), textAlign: TextAlign.center),
+                  Text(_pdfBytes != null ? ' $_pdfName' : 'Appuyer pour choisir un PDF', style: TextStyle(fontSize: 14, fontWeight: _pdfBytes != null ? FontWeight.bold : FontWeight.normal, color: _pdfBytes != null ? primaryColor : Colors.grey), textAlign: TextAlign.center),
                   if (_pdfBytes != null)
                     TextButton(onPressed: _pickPDF, child: const Text('Changer de fichier')),
                 ],
@@ -434,7 +434,7 @@ class _StudentAIQuizScreenState extends State<StudentAIQuizScreen> {
   Widget _buildResult() {
     final percentage = (_score / _questions.length * 100).round();
     final Color scoreColor = percentage >= 70 ? Colors.green : percentage >= 50 ? Colors.orange : Colors.red;
-    final String message = percentage >= 70 ? '🎉 Excellent travail !' : percentage >= 50 ? '👍 Bon effort, continue !' : '📚 Revois ton cours et réessaie !';
+    final String message = percentage >= 70 ? ' Excellent travail !' : percentage >= 50 ? ' Bon effort, continue !' : ' Revois ton cours et réessaie !';
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
@@ -492,8 +492,8 @@ class _StudentAIQuizScreenState extends State<StudentAIQuizScreen> {
                     ),
                     const SizedBox(height: 8),
                     if (!isCorrect)
-                      Text('❌ Ta réponse : ${_answers[i] != null ? options[_answers[i]!] : "Pas de réponse"}', style: const TextStyle(color: Colors.red, fontSize: 12)),
-                    Text('✅ Bonne réponse : ${options[q['correctIndex']]}', style: const TextStyle(color: Colors.green, fontSize: 12, fontWeight: FontWeight.w500)),
+                      Text(' Ta réponse : ${_answers[i] != null ? options[_answers[i]!] : "Pas de réponse"}', style: const TextStyle(color: Colors.red, fontSize: 12)),
+                    Text(' Bonne réponse : ${options[q['correctIndex']]}', style: const TextStyle(color: Colors.green, fontSize: 12, fontWeight: FontWeight.w500)),
                     if (q['explanation'] != null && q['explanation'].toString().isNotEmpty) ...[
                       const SizedBox(height: 6),
                       Container(

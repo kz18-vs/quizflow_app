@@ -12,7 +12,7 @@ class NotificationsScreen extends StatelessWidget {
           .doc(docId)
           .update({'isRead': true});
     } catch (e) {
-      debugPrint('❌ Erreur markAsRead: $e');
+      debugPrint(' Erreur markAsRead: $e');
     }
   }
 

@@ -1,13 +1,5 @@
 import 'package:flutter/material.dart';
 
-// ── WIDGET QUESTION RELIER ────────────────────────────────────────
-// À intégrer dans take_quiz_screen.dart
-// Utilisation :
-//   MatchingQuestionWidget(
-//     question: currentQuestion,
-//     onAnswered: (pairs) { ... },
-//   )
-
 class MatchingQuestionWidget extends StatefulWidget {
   final Map<String, dynamic> question;
   final Function(Map<int, int> matches) onAnswered;
@@ -387,8 +379,7 @@ class _MatchingQuestionWidgetState extends State<MatchingQuestionWidget> {
   }
 }
 
-// ── WIDGET RÉSULTAT MATCHING ──────────────────────────────────────
-// À utiliser dans l'écran de résultats pour afficher les corrections
+
 
 class MatchingResultWidget extends StatelessWidget {
   final Map<String, dynamic> question;
@@ -462,12 +453,12 @@ class MatchingResultWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        '✅ ${pair['right']}',
+                        ' ${pair['right']}',
                         style: const TextStyle(color: Colors.green, fontSize: 12),
                       ),
                       if (!isCorrect)
                         Text(
-                          '❌ Ta réponse : $studentAnswer',
+                          ' Ta réponse : $studentAnswer',
                           style: const TextStyle(color: Colors.red, fontSize: 12),
                         ),
                     ],
