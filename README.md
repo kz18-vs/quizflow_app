@@ -31,7 +31,7 @@ Une plateforme interactive développée avec **Flutter** et **Firebase** permett
 
 ---
 
--KAWTAR ZARMOUNE
+- KAWTAR ZARMOUNE
 - Stage de Fin d'Études - Génie Informatique - ESTG
 - Laboratoire LAGAGE – Faculté des Sciences d’Agadir
 
