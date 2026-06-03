@@ -52,26 +52,26 @@ flutter run -d chrome
 
 # Lancer sur Android (émulateur ou téléphone)
 flutter run
-
+---
 ## Structure Principale
 lib/screens/ → Interfaces (Enseignant & Étudiant)
 lib/services/ → Gamification, IA, Notifications
 lib/widgets/ → Composants réutilisables
-
+---
 ## Points Forts
 4 types de questions interactives
 Système anti-triche intelligent
 Gamification complète avec 12 badges
 Notifications contextuelles
 Version Android compilée avec succès
-
+---
 ## Objectif du Projet
 Développer une solution moderne qui facilite le travail des enseignants et motive les étudiants grâce à des mécanismes ludiques et intelligents.
-
+---
 ## KAWTAR ZARMOUNE
 Stage de Fin d'Études - Génie Informatique - ESTG
 Laboratoire LAGAGE – Faculté des Sciences d’Agadir
-
+---
 ## GitHub : @kz18-vs
 ## Email : kzarmoune@gmail.com
 
