@@ -31,17 +31,16 @@ Une plateforme interactive développée avec **Flutter** et **Firebase** permett
 
 ---
 
-## KAWTAR ZARMOUNE
-
+-KAWTAR ZARMOUNE
 - Stage de Fin d'Études - Génie Informatique - ESTG
 - Laboratoire LAGAGE – Faculté des Sciences d’Agadir
 
 ---
 
-## GitHub : @kz18-vs
+- GitHub : @kz18-vs
 
-## Email : kzarmoune@gmail.com
-## Fonctionnalités Principales
+- Email : kzarmoune@gmail.com
+- Fonctionnalités Principales
 
 ###  Espace Enseignant
 - Création de quiz multi-formats (QCM, Vrai/Faux, Matching, Ordre de mots)
@@ -65,7 +64,16 @@ Une plateforme interactive développée avec **Flutter** et **Firebase** permett
 - **Backend** : Firebase (Firestore, Authentication)
 - **IA** : Gemini (Google AI)
 - **Mobile** : Android Studio (APK 39.9 MB)
+-KAWTAR ZARMOUNE
+- Stage de Fin d'Études - Génie Informatique - ESTG
+- Laboratoire LAGAGE – Faculté des Sciences d’Agadir
 
+---
+
+- GitHub : @kz18-vs
+
+- Email : kzarmoune@gmail.com
+- Fonctionnalités Principales
 ---
 
 ## Comment Lancer le Projet
