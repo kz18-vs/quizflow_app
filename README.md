@@ -4,7 +4,7 @@
 
 Une plateforme interactive développée avec **Flutter** et **Firebase** permettant aux enseignants de créer des évaluations variées et aux étudiants de progresser de manière ludique.
 
-![QuizFlow Banner](https://via.placeholder.com/800x300/4A43EC/FFFFFF?text=QuizFlow)
+
 
 ---
 
